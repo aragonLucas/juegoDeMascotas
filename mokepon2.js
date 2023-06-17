@@ -475,8 +475,8 @@ function enviarPosicion(x, y) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            x,
-            y
+            x: x,
+            y: y
         })
     })
 }
