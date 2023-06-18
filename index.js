@@ -16,7 +16,7 @@ class Jugador {
         this.mokepon = mokepon 
     }
 
-    actualizarPosicion(x, y){
+    actualizarPosicion(x, y) {
         this.x = x
         this.y = y
     }
@@ -30,14 +30,14 @@ class Mokepon {
 
 app.get("/unirse", (req, res) =>{
     const id = `${Math.random() }` 
-    
+   // const id = `${Math.floor(Math.random() * 100  + 1) }`
     const jugador = new Jugador(id)
     jugadores.push(jugador)
 
     res.setHeader("Access-Control-Allow-Origin", "*")
 
     res.send(id)
-
+    res.end()
 
 })
 
@@ -59,18 +59,22 @@ app.post("/mokepon/:jugadorId", (req, res) =>{
     res.end()
 })
 
-app.post("/mokepon/:jugadorId/posicion", (req, res)=>{
-    const jugadorId =req.params.jugadorId || ""
-    const x = res.body.x || 0
-    const y = res.body.y || 0
+app.post("/mokepon/:jugadorId/posicion", (req, res) => {
+    const jugadorId = req.params.jugadorId || ""
+    const x = req.body.x || 0
+    const y = req.body.y || 0
 
     const jugadorIndex = jugadores.findIndex((jugador) => jugadorId == jugador.id)
    
-    if(jugadorIndex>=0){
+    if(jugadorIndex >= 0) {
      jugadores[jugadorIndex].actualizarPosicion(x, y)
      }
 
-     res.end()
+const enemigos = jugadores.filter((jugador) => jugadorId !== jugador.id)
+
+    res.setHeader("Content-Type", "application/json")
+    res.send({enemigos})
+    res.end()
  
 
 })
